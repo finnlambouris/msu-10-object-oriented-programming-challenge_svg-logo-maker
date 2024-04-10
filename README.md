@@ -6,7 +6,7 @@ I WANT to generate a simple logo for my projects
 SO THAT I don't have to pay a graphic designer
 
 ## Functionality
-[Walkthrough Video]()
+[Walkthrough Video](https://youtu.be/l9Uq1f0qrMY)
 
 ## Installation
 Node.js is needed to be able to run this code in the terminal.
