@@ -50,10 +50,10 @@ handlePrompting = function() {
                 }
             ]
         )
-        getShapeColor(logoText, textColor, logoShape);
+        getBackgroundColor(logoText, textColor, logoShape);
     }
     
-    let getShapeColor = async function(logoText, textColor, logoShape) {
+    let getBackgroundColor = async function(logoText, textColor, logoShape) {
         let shapeColor = await inquirer.prompt(
             [
                 {
@@ -69,7 +69,39 @@ handlePrompting = function() {
 
 // function to handle creating the SVG file
 createSVG = function(logoText, textColor, logoShape, shapeColor) {
+    const userInputs = {
+        logoText: logoText.logoText,
+        textColor: textColor.textColor,
+        logoShape: logoShape.logoShape,
+        shapeColor: shapeColor.shapeColor
+    }
+    console.log(userInputs);
 
+    let SVG = ''
+    if(userInputs.logoShape === "circle") {
+        SVG =
+        `<svg width="300" height="200">
+            <circle cx="150" cy="100" r="90" fill="${userInputs.shapeColor}"/>
+            <text x="150" y="120" font-size="60" text-anchor="middle" fill="${userInputs.textColor}">${userInputs.logoText}</text>
+        </svg>`
+    } else if(userInputs.logoShape === "triangle") {
+        SVG =
+        `<svg width="300" height="200">
+            <polygon points="150,10 50,190 250,190" fill="${userInputs.shapeColor}"/>
+            <text x="150" y="160" font-size="60" text-anchor="middle" fill="${userInputs.textColor}">${userInputs.logoText}</text>
+        </svg>`
+    } else {
+        SVG =
+        `<svg width="300" height="200">
+            <polygon points="60,10 60,190 240,190 240,10 " fill="${userInputs.shapeColor}"/>
+            <text x="150" y="120" font-size="60" text-anchor="middle" fill="${userInputs.textColor}">${userInputs.logoText}</text>
+        </svg>`
+    }
+    console.log(SVG);
+
+    fs.writeFile('./logos/logo.svg', SVG, (err) => {
+        err ? console.log('Your logo was not created. Please try again.') : console.log('Your logo was created! Check out the Logos folder to view it.');
+    });
 }
 
 handlePrompting();
