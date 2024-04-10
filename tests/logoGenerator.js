@@ -1,5 +1,6 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
+const { Module } = require('module');
 
 // function to handle inquirer prompts
 handlePrompting = function() {
@@ -67,28 +68,48 @@ handlePrompting = function() {
 
 // function to handle creating the SVG file
 createSVG = function(logoText, textColor, logoShape, shapeColor) {
-    const Shapes = require('./tests/shapes.js');
-    const Circle = Shapes[0];
-    const Triangle = Shapes[1];
-    const Square = Shapes[2];
 
-    const userInputs = {
-        logoText: logoText.logoText,
-        textColor: textColor.textColor,
-        logoShape: logoShape.logoShape,
-        shapeColor: shapeColor.shapeColor
+    class UserInputs {
+        constructor(logoText, textColor, logoShape, shapeColor) {
+            this.logoText = logoText.logoText,
+            this.textColor = textColor.textColor,
+            this.logoShape = logoShape.logoShape,
+            this.shapeColor = shapeColor.shapeColor
+        }
     }
 
-    if (userInputs.logoShape === "circle") {
-        const logo = new Circle(userInputs.logoText, userInputs.textColor, userInputs.logoShape, userInputs.shapeColor);
-        logo.render();
-    } else if (userInputs.logoShape === "triangle") {
-        const logo = new Triangle(userInputs.logoText, userInputs.textColor, userInputs.logoShape, userInputs.shapeColor);
-        logo.render();
+    const trash = new UserInputs("hi", "green", "circle", "blue");
+    console.log(trash);
+
+    const userInputs = new UserInputs(logoText, textColor, logoShape, shapeColor)
+
+
+    let SVG = ''
+    if(userInputs.logoShape === "circle") {
+        SVG =
+        `<svg width="300" height="200">
+            <circle cx="150" cy="100" r="90" fill="${userInputs.shapeColor}"/>
+            <text x="150" y="120" font-size="60" text-anchor="middle" fill="${userInputs.textColor}">${userInputs.logoText}</text>
+        </svg>`
+    } else if(userInputs.logoShape === "triangle") {
+        SVG =
+        `<svg width="300" height="200">
+            <polygon points="150,10 50,190 250,190" fill="${userInputs.shapeColor}"/>
+            <text x="150" y="160" font-size="60" text-anchor="middle" fill="${userInputs.textColor}">${userInputs.logoText}</text>
+        </svg>`
     } else {
-        const logo = new Square(userInputs.logoText, userInputs.textColor, userInputs.logoShape, userInputs.shapeColor);
-        logo.render();
+        SVG =
+        `<svg width="300" height="200">
+            <polygon points="60,10 60,190 240,190 240,10 " fill="${userInputs.shapeColor}"/>
+            <text x="150" y="120" font-size="60" text-anchor="middle" fill="${userInputs.textColor}">${userInputs.logoText}</text>
+        </svg>`
     }
+
+    fs.writeFile('./logos/logo.svg', SVG, (err) => {
+        err ? console.log('Your logo was not created. Please try again.') : console.log('Your logo was created! Check out the Logos folder to view it.');
+    });
 }
+
+Module.exports = createSVG();
 
 handlePrompting();
