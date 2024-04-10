@@ -67,7 +67,7 @@ handlePrompting = function() {
 
 // function to handle creating the SVG file
 createSVG = function(logoText, textColor, logoShape, shapeColor) {
-    const Shapes = require('./tests/shapes.js');
+    const Shapes = require('./lib/shapes.js');
     const Circle = Shapes[0];
     const Triangle = Shapes[1];
     const Square = Shapes[2];
@@ -82,12 +82,15 @@ createSVG = function(logoText, textColor, logoShape, shapeColor) {
     if (userInputs.logoShape === "circle") {
         const logo = new Circle(userInputs.logoText, userInputs.textColor, userInputs.logoShape, userInputs.shapeColor);
         logo.render();
+        logo.createSVG();
     } else if (userInputs.logoShape === "triangle") {
         const logo = new Triangle(userInputs.logoText, userInputs.textColor, userInputs.logoShape, userInputs.shapeColor);
         logo.render();
+        logo.createSVG();
     } else {
         const logo = new Square(userInputs.logoText, userInputs.textColor, userInputs.logoShape, userInputs.shapeColor);
         logo.render();
+        logo.createSVG();
     }
 }
 
